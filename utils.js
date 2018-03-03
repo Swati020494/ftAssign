@@ -1,6 +1,13 @@
+/**
+ * setter() 
+ * sets the values
+ * Take three arguments, 'data' being the state of data at the time,
+ * 'key' being the key to be set 
+ * 'val' ids the value to be assigned to hey
+ */
 export let setter = (data, key, val) => {
   let keys = key.split('.');
-  let objThres =[];
+  let objThres = [];
   for (let i = 0; i < keys.length; i++) {
     if (i === keys.length - 1) {
       objThres[keys[i]] = val;
@@ -13,7 +20,12 @@ export let setter = (data, key, val) => {
   }
   return data;
 };
-
+/**
+ * getter() 
+ * get the value of the  
+ * Take two argument, 'data' being the state of data at the time,
+ * 'key' being the key whose value has to be retrieved
+ */
 export let getter = (data, key) => {
   let keys = key.split('.'), error = false, val, objThres;
   for (let i = 0; i < keys.length; i++) {
@@ -30,7 +42,11 @@ export let getter = (data, key) => {
   }
   return error ? 'key not found' : val;
 };
-
+/**
+ * isSameOrPartOfKey() 
+ * Take three arguments, 'displayParam', 'changedPropParam', 'newdata'
+ * it matches both the params and sees if its good on and prop affect the same param
+ */
 export let isSameOrPartOfKey = (changedPropParam, displayParam, newdata) => {
   if (changedPropParam === displayParam) return true;
   let keyParam1, keyParam2, lengthkKeyParam1, lengthkKeyParam2, length, error = false;
@@ -39,10 +55,10 @@ export let isSameOrPartOfKey = (changedPropParam, displayParam, newdata) => {
   lengthkKeyParam1 = keyParam1.length;
   lengthkKeyParam2 = keyParam2.length;
   if (lengthkKeyParam1 === lengthkKeyParam2) return false;
-  if (lengthkKeyParam1 > lengthkKeyParam2){
-    console.log("hee", changedPropParam, displayParam, keyParam1,keyParam2)
+  if (lengthkKeyParam1 > lengthkKeyParam2) {
+    console.log("hee", changedPropParam, displayParam, keyParam1, keyParam2)
     for (let i = 0; i < lengthkKeyParam2; i++) {
-      if (keyParam1 [i]!== keyParam2[i]) {
+      if (keyParam1[i] !== keyParam2[i]) {
         error = true;
         break;
       }
@@ -51,12 +67,12 @@ export let isSameOrPartOfKey = (changedPropParam, displayParam, newdata) => {
     return true;
   }
   for (let i = 0; i < lengthkKeyParam1; i++) {
-      if (keyParam1[i]!== keyParam2[i]) {
-        error = true;
-        break;
-      }
+    if (keyParam1[i] !== keyParam2[i]) {
+      error = true;
+      break;
+    }
   }
-  if (error ) return false; 
-  if(getter(newdata,displayParam)==='error') return false;
+  if (error) return false;
+  if (getter(newdata, displayParam) === 'error') return false;
   return true;
 };
