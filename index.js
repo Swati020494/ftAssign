@@ -86,7 +86,12 @@ State.create = (data) => {
 					}
 				}else{
 					error = true;
-					console.log('the keys in props and on dont match')	
+					this.onData.value = null;
+					this.onData.func = null;
+					this.onNext.value = null;
+					this.onNext.func = null;
+					this.onNext.count = 0;
+					console.log('the keys in props and on dont match, unsuscribed');
 				}
 			}
 			else if(this.onNext.value){
@@ -97,7 +102,12 @@ State.create = (data) => {
 					}
 				}else{
 					error = true;
-					console.log('the keys in props and on dont match')	
+					this.onData.value = null;
+					this.onData.func = null;
+					this.onNext.value = null;
+					this.onNext.func = null;
+					this.onNext.count = 0;
+					console.log('the keys in props and on dont match, unsuscribed');
 				}
 			}
 			this.intermediate = !this.isLock && !error? JSON.parse(JSON.stringify(this.latest)):this.intermediate;
