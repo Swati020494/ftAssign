@@ -95,10 +95,19 @@ State.create = (data) => {
 					if(!this.isLock){
 						this.onData.func(this.intermediate,myval);
 					}
-				}else{
+				}else{//unsub
 					error = true;
+<<<<<<< HEAD
 					this.unsub();
 					console.log('the keys in props and on dont match, unsuscribed');
+=======
+					this.onData.value = null;
+					this.onData.func = null;
+					this.onNext.value = null;
+					this.onNext.func = null;
+					this.onNext.count = 0;
+					console.log('the keys in props and on dont match, unsubscribed');
+>>>>>>> 532be5120a337743c18b47a0296bbd16b187f50c
 				}
 			}
 			else if(this.onNext.value){
@@ -107,10 +116,19 @@ State.create = (data) => {
 						if(this.onNext.count === 1) this.onNext.func(this.intermediate,myval);
 						else if(this.onNext.count === 0) this.onData.count = 1;
 					}
-				}else{
+				}else{//unsub
 					error = true;
+<<<<<<< HEAD
 					this.unsub();
 					console.log('the keys in props and on dont match, unsuscribed');
+=======
+					this.onData.value = null;
+					this.onData.func = null;
+					this.onNext.value = null;
+					this.onNext.func = null;
+					this.onNext.count = 0;
+					console.log('the keys in props and on dont match, unsubscribed');
+>>>>>>> 532be5120a337743c18b47a0296bbd16b187f50c
 				}
 			}
 			this.intermediate = !this.isLock && !error? JSON.parse(JSON.stringify(this.latest)):this.intermediate;
