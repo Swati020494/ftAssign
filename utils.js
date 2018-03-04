@@ -56,7 +56,6 @@ export let isSameOrPartOfKey = (changedPropParam, displayParam, newdata) => {
   lengthkKeyParam2 = keyParam2.length;
   if (lengthkKeyParam1 === lengthkKeyParam2) return false;
   if (lengthkKeyParam1 > lengthkKeyParam2) {
-    console.log("hee", changedPropParam, displayParam, keyParam1, keyParam2)
     for (let i = 0; i < lengthkKeyParam2; i++) {
       if (keyParam1[i] !== keyParam2[i]) {
         error = true;
