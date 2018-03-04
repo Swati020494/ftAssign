@@ -68,6 +68,17 @@ State.create = (data) => {
 			lock = false;
 		},
 		/**
+		* unsub()
+		* deregisters the on and next handlers, when the on param is not affected by prop param
+		*/
+		unsub :function () {
+			this.onData.value = null;
+			this.onData.func = null;
+			this.onNext.value = null;
+			this.onNext.func = null;
+			this.onNext.count = 0;
+		},
+		/**
 		* prop() 
 		* acts as getter and setter. 
 		* If only one argument, it will retrieve the value associated with the property
@@ -86,11 +97,7 @@ State.create = (data) => {
 					}
 				}else{
 					error = true;
-					this.onData.value = null;
-					this.onData.func = null;
-					this.onNext.value = null;
-					this.onNext.func = null;
-					this.onNext.count = 0;
+					this.unsub();
 					console.log('the keys in props and on dont match, unsuscribed');
 				}
 			}
@@ -102,11 +109,7 @@ State.create = (data) => {
 					}
 				}else{
 					error = true;
-					this.onData.value = null;
-					this.onData.func = null;
-					this.onNext.value = null;
-					this.onNext.func = null;
-					this.onNext.count = 0;
+					this.unsub();
 					console.log('the keys in props and on dont match, unsuscribed');
 				}
 			}
