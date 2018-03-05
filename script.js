@@ -1,4 +1,4 @@
-import { setter, getter, isSameOrPartOfKey } from './utils';
+import { setter, getter, isSameOrPartOfKey,deepCopyObject } from './utils';
 let State = {}
 /**
 * State.create() take a simple JavaScript Object as argument
@@ -8,9 +8,9 @@ State.create = (data) => {
 	let old = data, inter = data, latest = data;
 	return {
 		observers: [],
-		base: JSON.parse(JSON.stringify(old)),
-		intermediate: JSON.parse(JSON.stringify(old)),
-		latest: JSON.parse(JSON.stringify(old)),
+		base: deepCopyObject(old),
+		intermediate: deepCopyObject(old),
+		latest: deepCopyObject(old),
 		onData: { value: null, func: null },
 		onNext: { val: null, count: 0, func: null },
 		isLock: false,
@@ -66,7 +66,7 @@ State.create = (data) => {
 		},
 		unlock: function () {
 			this.isLock = false;
-      this.onData.value !== null ? this.onData.func(this.intermediate,this.latest) : this.onData.value === null ?this.onNext.func(this.intermediate,this.latest) : null;
+      this.onData.value !== null ? this.onData.func(deepCopyObject(this.intermediate),deepCopyObject(this.latest)) : this.onData.value === null ?this.onNext.func(deepCopyObject(this.intermediate),deepCopyObject(this.latest)) : null;
 		},
 		/**
 		* unsub()
@@ -78,6 +78,7 @@ State.create = (data) => {
 			this.onNext.value = null;
 			this.onNext.func = null;
 			this.onNext.count = 0;
+      		console.log('the keys in props and on dont match, unsuscribed');
 		},
 		/**
 		* prop() 
@@ -86,26 +87,24 @@ State.create = (data) => {
 		* If two arguments, first is the property and second is the value to be set to that argument
 		*/
 		prop: function (param1, param2) {
-			if(!param2) {
+			if(param2 === undefined) {
 				return getter(this.latest,param1);
 			}
 			let myval = setter(this.latest,param1,param2), error = false;
-			//console.log(isSameOrPartOfKey(param1,this.onData.value,this.latest))
 			if(this.onData.value){
 				if(isSameOrPartOfKey(param1,this.onData.value,this.latest)){
 					if(!this.isLock){
-						this.onData.func(JSON.parse(JSON.stringify(this.intermediate)),JSON.parse(JSON.stringify(myval)));
+						this.onData.func(deepCopyObject(this.intermediate),deepCopyObject(myval));
 					}
 				}else{
 					error = true;
 					this.unsub();
-					console.log('the keys in props and on dont match, unsuscribed');
 				}
 			}
 			else if(this.onNext.value){
 				if(isSameOrPartOfKey(param1,this.onNext.value,this.latest)){
 					if(!this.isLock){
-						if(this.onNext.count === 1) {this.onNext.func(JSON.parse(JSON.stringify(this.intermediate)),JSON.parse(JSON.stringify(myval)))
+						if(this.onNext.count === 1) {this.onNext.func(deepCopyObject(this.intermediate),deepCopyObject(myval))
              this.onNext.count === 0
             }
 						else if(this.onNext.count === 0) this.onNext.count = 1;
@@ -113,12 +112,12 @@ State.create = (data) => {
 				}else{
 					error = true;
 					this.unsub();
-					console.log('the keys in props and on dont match, unsuscribed');
 				}
 			}
-			this.intermediate = !this.isLock && !error && this.onNext.count !== 1? JSON.parse(JSON.stringify(this.latest)):this.intermediate;
+			this.intermediate = !this.isLock && !error && this.onNext.count !== 1? deepCopyObject(this.latest):this.intermediate;
 			return;
 		}
 	};
 };
 export default State ;
+

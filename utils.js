@@ -75,3 +75,33 @@ export let isSameOrPartOfKey = (changedPropParam, displayParam, newdata) => {
   if (getter(newdata, displayParam) === 'error') return false;
   return true;
 };
+/**
+ * deepCopyObject() 
+ * Take one argument, 'param' and returns a new copy of the object
+ * it follows a recursive approach to copy the  function
+ */
+export const deepCopyObject = (param)=>{
+    let copiedObj,i;
+    if (typeof param !== 'object') {
+      return param;
+    }
+    if (!param) {
+      return param;
+    }
+    //copying the array inside an object
+    if ('[object Array]' === Object.prototype.toString.apply(param)) {
+      copiedObj = [];
+      for (i = 0; i < param.length; i += 1) {
+        copiedObj[i] = deepCopyObject(param[i]);
+      }
+      return copiedObj;
+    }
+    copiedObj = {};
+    //rest all kind of keys
+    for (i in param) {
+      if (param.hasOwnProperty(i)) {
+          copiedObj[i] = deepCopyObject(param[i]);
+      }
+    }
+    return copiedObj;
+  }
